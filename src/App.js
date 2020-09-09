@@ -1,6 +1,7 @@
 import React ,{useState} from 'react';
 import SignUp from "./components/SignUp"
 import LogIn from "./components/LogIn"
+import {Account} from './components/Accounts'
 
 const App=() =>{
 
@@ -8,11 +9,10 @@ const App=() =>{
 
 
   return (
-    <div >
-    <SignUp/>
-    <LogIn/>
-
-    </div>
+    <Account>
+      <SignUp/>
+      <LogIn/>
+    </Account>
   );
 }
 

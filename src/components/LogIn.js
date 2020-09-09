@@ -1,40 +1,26 @@
-import React ,{useState} from 'react';
-import {CognitoUser,AuthenticationDetails} from 'amazon-cognito-identity-js';
-import UserPool from '../UserPool'
+import React ,{useState,useContext} from 'react';
+import {CognitoUser,AuthenticationDetails} from 'amazon-cognito-identity-js'; //destructured required classes
+import {AccountContext} from './Accounts'
 
-const SignUp=() =>{
+const LogIn=() =>{
 
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+
+  const {authenticate}=useContext(AccountContext);
 
 
 
   const onSubmit=event=>{
     event.preventDefault();
 
-    const user= new CognitoUser({ //sets 'user' as a new cognito user with username and pool details contained
-      Username:email,
-      Pool:UserPool
+    authenticate(email,password) //authenticate method brought in from Accounts via destructured AccountContext
+    .then(data=>{
+      console.log('Logged In!',data)
     })
-
-    const authDetails= new AuthenticationDetails({
-      Username:email,
-      Password:password
+    .catch(err=>{
+      console.error('Failed to log in',err);
     })
-
-    user.authenticateUser(authDetails,{
-      onSuccess:data=>{
-        console.log('onSuccess',data);
-      },
-      onFailure:err=>{
-        console.error('onFailure',err);
-      },
-      newPasswordRequired:data=>{
-        console.log('newPasswordRequired',data);
-      }
-
-    })
-
   };
 
 
@@ -50,4 +36,4 @@ const SignUp=() =>{
   );
 }
 
-export default SignUp;
+export default LogIn;
