@@ -11,11 +11,28 @@ const Account = props =>{
     await new Promise((resolve,reject)=>{
       const user=Pool.getCurrentUser();
       if(user){
-        user.getSession((err,session)=>{
+        user.getSession(async(err,session)=>{
           if(err){
             reject()
           }else{
-            resolve(session)
+            const attributes= await new Promise((resolve,reject)=>{ //look up await/promises
+              user.getUserAttributes((err,attributes)=>{
+                if (err){
+                  reject(err) //look up reject
+                }else{
+                  const results={}
+                  for (let attribute of attributes){
+                    const {Name,Value}=attribute
+                    results[Name]=Value;
+
+                  }
+                  resolve(results) //look up resolve
+                }
+              })
+            })
+            resolve({user,
+              ...session,
+            ...attributes})
           }
         })
 

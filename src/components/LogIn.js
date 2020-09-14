@@ -6,6 +6,8 @@ const LogIn=() =>{
 
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+  const [userSub,setUserSub]=useState(''); //not part of tutorial- own attempt to access unique UUID (was successful)
+  //can potentially use for databases so users can only access their own data???
 
   const {authenticate}=useContext(AccountContext);
 
@@ -16,6 +18,7 @@ const LogIn=() =>{
 
     authenticate(email,password) //authenticate method brought in from Accounts via destructured AccountContext
     .then(data=>{
+      setUserSub(data.accessToken.payload.username)
       console.log('Logged In!',data)
     })
     .catch(err=>{
